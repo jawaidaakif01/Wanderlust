@@ -38,16 +38,16 @@ app.engine('ejs', ejsMate);
 app.use(express.static(path.join(__dirname, "/public")));
 
 const store = MongoStore.create({
-    mongoUrl : dbUrl,
-    crypto : {
-        secret : process.env.SECRET
+    mongoUrl: dbUrl,
+    crypto: {
+        secret: process.env.SECRET,
     },
-    touchAfter: 24*3600,
+    touchAfter: 24*3600
 });
 
-store.on("error", () => {
-    console.log("ERROR in MONGO SESSION STORE", err);
-})
+store.on("error", (err) => {
+    console.log("session store error", err);
+});
 
 const sessionOptions = {
     store,
@@ -63,7 +63,8 @@ const sessionOptions = {
 
 // app.get("/", (req, res) => {
 //     res.send("Hi, I am root")
-// })
+// });
+
 
 app.use(session(sessionOptions));
 app.use(flash());
