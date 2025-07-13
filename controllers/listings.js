@@ -13,6 +13,22 @@ module.exports.index = async (req, res) => {
     }
 
     const allListings = await Listing.find(filter);
+    res.render("/", { allListings, location });
+};
+
+module.exports.index = async (req, res) => {
+    const { category, location } = req.query;
+    let filter = {};
+
+    if (category) {
+        filter.category = category;
+    }
+
+    if (location) {
+        filter.location = new RegExp(location, "i");
+    }
+
+    const allListings = await Listing.find(filter);
     res.render("listings/index.ejs", { allListings, location });
 };
 
